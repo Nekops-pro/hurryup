@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://cxi46ws5vjmvi"]
+
+[ext_resource type="Texture2D" uid="uid://rdrp2r58r6oq" path="res://icon.svg" id="1_ix33q"]
+[ext_resource type="Script" uid="uid://pacniyrvxdg6" path="res://character/Mob.cs" id="1_pt1l8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pt1l8"]
+atlas = ExtResource("1_ix33q")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_se8db"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pt1l8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8k63o"]
+size = Vector2(131, 126)
+
+[node name="Mob" type="RigidBody2D"]
+position = Vector2(547, 299)
+collision_mask = 0
+gravity_scale = 0.0
+script = ExtResource("1_pt1l8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.435, 0.435)
+sprite_frames = SubResource("SpriteFrames_se8db")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5, -1)
+scale = Vector2(0.425, 0.425)
+shape = SubResource("RectangleShape2D_8k63o")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(31.5, 31.5)
+scale = Vector2(57.65, 32.65)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnVisibilityNotifier2DScreenExited"]
