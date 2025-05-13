@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://by5npc5c6eo4f"]
+
+[ext_resource type="Script" uid="uid://y004vhrjjkxa" path="res://UI/NewGameBt.cs" id="1_gd32j"]
+[ext_resource type="Script" uid="uid://boeare4bawd6t" path="res://UI/ExitBt.cs" id="2_ms4m7"]
+
+[sub_resource type="Theme" id="Theme_ms4m7"]
+
+[node name="StartUi" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ms4m7")
+
+[node name="NewGameBT" type="Button" parent="."]
+layout_mode = 0
+offset_left = 83.0
+offset_top = 364.0
+offset_right = 227.0
+offset_bottom = 411.0
+text = "新游戏"
+script = ExtResource("1_gd32j")
+
+[node name="ConfigBT" type="Button" parent="."]
+offset_left = 83.0
+offset_top = 437.0
+offset_right = 227.0
+offset_bottom = 484.0
+text = "设置"
+
+[node name="ExitBT" type="Button" parent="."]
+offset_left = 83.0
+offset_top = 512.0
+offset_right = 227.0
+offset_bottom = 559.0
+text = "退出游戏"
+script = ExtResource("2_ms4m7")
+
+[connection signal="pressed" from="NewGameBT" to="NewGameBT" method="OnNewGamePressed"]
+[connection signal="pressed" from="ExitBT" to="ExitBT" method="OnExitPressed"]

@@ -50,9 +50,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dd465")
 }],
-"loop": true,
+"loop": false,
 "name": &"walk_front",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -69,23 +69,23 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk_right",
-"speed": 5.0
+"speed": 6.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qnedo"]
 radius = 79.0
 height = 282.0
 
-[node name="Player" type="Area2D"]
+[node name="Player" type="CharacterBody2D"]
 scale = Vector2(0.25, 0.25)
 script = ExtResource("1_lvecp")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_1kp85")
 animation = &"walk_front"
+frame = 3
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 32)
 shape = SubResource("CapsuleShape2D_qnedo")
-
-[connection signal="body_entered" from="." to="." method="OnBodyEntered"]

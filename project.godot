@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="HurryUp"
-run/main_scene="uid://cq7v1gyao3cy4"
+run/main_scene="uid://by5npc5c6eo4f"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 

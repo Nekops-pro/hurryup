@@ -1,10 +1,10 @@
 using Godot;
 using System;
 
-public partial class Player : Area2D
+public partial class Player : CharacterBody2D
 {
     [Export]
-    private int Speed {get;set;} = 400;//以像素每秒为单位的移动速度
+    private int Speed {get;set;} = 200;//以像素每秒为单位的移动速度
     public Vector2 ScreenSize;//屏幕大小
     [Signal]
     public delegate void HitEventHandler();
@@ -15,22 +15,22 @@ public partial class Player : Area2D
     {
         ScreenSize = GetViewportRect().Size;
     }
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
-        var velocity = Vector2.Zero;//创建一个新的Vector2对象，其值为(0,0)
-        if(Input.IsActionPressed("move_right")){
-            velocity.X += 1;
+        var velocity = Vector2.Zero;
+        if(Input.IsActionPressed("move_right")) velocity.X += 1;
+        if(Input.IsActionPressed("move_left")) velocity.X -= 1;
+        if(Input.IsActionPressed("move_up")) velocity.Y -= 1;
+        if(Input.IsActionPressed("move_down")) velocity.Y += 1;
+        
+        if(velocity.Length() > 0) {
+            velocity = velocity.Normalized() * Speed;
         }
-        if(Input.IsActionPressed("move_left")){
-            velocity.X -= 1;
-        }
-        if(Input.IsActionPressed("move_up")){
-            velocity.Y -= 1;
-        }
-        if(Input.IsActionPressed("move_down")){
-            velocity.Y += 1;
-        }
-        var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");//GetNode<T>(路径) 是Godot中获取子节点的标准方法。
+        
+        Velocity = velocity;
+        MoveAndSlide();
+        
+        var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         if(velocity.Length() > 0){//Length() 计算向量的模长：√(x² + y²)。
             velocity = velocity.Normalized() * Speed;//Normalized() 方法返回一个单位向量，即向量除以其模长得到的向量。
             if(velocity.Y > 0){
@@ -51,9 +51,19 @@ public partial class Player : Area2D
             y: Mathf.Clamp(Position.Y, 0, ScreenSize.Y)
         );
     }
+    
+    // public override void _PhysicsProcess(double delta){
+    //     var velocity = Velocity;//Velocity 是一个属性，用于获取或设置节点的当前速度
+    //     var direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");//Input.GetVector 是Godot中获取输入方向向量的方法。
+    //     MoveAndSlide();
+    //     if(IsOnWall()){
+    //         velocity = Vector2.Zero;
+    //     }
+    // }
     /**
      * esc退出
      */
+
     public override void _Input(InputEvent @event){
         if(@event is InputEventKey eventkey){
             if(eventkey.Pressed && eventkey.Keycode == Key.Escape){
