@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://18faet6lbg2j"]
+[gd_scene load_steps=14 format=3 uid="uid://18faet6lbg2j"]
 
 [ext_resource type="Texture2D" uid="uid://dx300od7tl4hj" path="res://img/精灵-0001-Recovered-Recovered.png" id="1_f706e"]
 [ext_resource type="Script" uid="uid://cobqsp600nyd3" path="res://character/Player.cs" id="1_lvecp"]
+[ext_resource type="Script" uid="uid://d4a8r0nu8vso2" path="res://character/StaminaTimer.cs" id="3_dl7da"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ij6vw"]
 atlas = ExtResource("1_f706e")
@@ -89,3 +90,8 @@ frame_progress = 1.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 32)
 shape = SubResource("CapsuleShape2D_qnedo")
+
+[node name="StaminaTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+script = ExtResource("3_dl7da")

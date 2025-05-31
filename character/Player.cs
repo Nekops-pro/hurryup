@@ -5,6 +5,8 @@ public partial class Player : CharacterBody2D
 {
     [Export]
     private int Speed {get;set;} = 200;//以像素每秒为单位的移动速度
+    // [Export]
+    // private int stamina {get;set;} = 50;//玩家的耐力值
     public Vector2 ScreenSize;//屏幕大小
     [Signal]
     public delegate void HitEventHandler();
@@ -22,7 +24,13 @@ public partial class Player : CharacterBody2D
         if(Input.IsActionPressed("move_left")) velocity.X -= 1;
         if(Input.IsActionPressed("move_up")) velocity.Y -= 1;
         if(Input.IsActionPressed("move_down")) velocity.Y += 1;
-        
+        if(Input.IsActionPressed("running")){
+            Running(delta);
+        }
+        if(Input.IsActionPressed("running") == false){
+            Speed = 50;
+            OnRestState(delta);
+        }
         if(velocity.Length() > 0) {
             velocity = velocity.Normalized() * Speed;
         }
@@ -52,6 +60,10 @@ public partial class Player : CharacterBody2D
         );
     }
     
+
+    public override void _Process(double delta){
+
+    }
     // public override void _PhysicsProcess(double delta){
     //     var velocity = Velocity;//Velocity 是一个属性，用于获取或设置节点的当前速度
     //     var direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");//Input.GetVector 是Godot中获取输入方向向量的方法。
@@ -64,6 +76,7 @@ public partial class Player : CharacterBody2D
      * esc退出
      */
 
+    //输入监听
     public override void _Input(InputEvent @event){
         if(@event is InputEventKey eventkey){
             if(eventkey.Pressed && eventkey.Keycode == Key.Escape){
@@ -71,6 +84,8 @@ public partial class Player : CharacterBody2D
             }
         }
     }
+
+    //碰撞检测
     private void OnBodyEntered(Node2D body){//OnBodyEntered 是一个Godot引擎的碰撞检测回调方法，当玩家与其他物体的碰撞体接触时自动触发
         GD.Print("Body has entered");
         Hide();  // 隐藏玩家角色
@@ -79,10 +94,27 @@ public partial class Player : CharacterBody2D
         
     }
     
-
+    //地图进入初始位置
     public void Start(Vector2 position){
         Position = position;  // 设置玩家初始位置
         Show();  // 显示玩家角色（如果之前被隐藏）
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;  // 启用碰撞检测
+    }
+
+    //奔跑
+    public void Running(double delta){
+        var StaminaTimer = GetNode<StaminaTimer>("StaminaTimer");
+        if(StaminaTimer.stamina > 0){
+            StaminaTimer.OnConsumeState(delta);
+            Speed = 75;
+        }else{
+            Speed = 50;
+        }
+    }
+
+    //体力自行恢复
+    public void OnRestState(double delta){
+        var StaminaTimer = GetNode<StaminaTimer>("StaminaTimer");
+        StaminaTimer.OnRestState(delta);
     }
 }
