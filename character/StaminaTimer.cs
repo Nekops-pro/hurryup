@@ -21,7 +21,7 @@ public partial class StaminaTimer : Timer
 	public override void _Process(double delta)
 	{
 
-		GD.Print("当前体力值："+(stamina/maxstamina*100));
+		// GD.Print("当前体力值："+(stamina/maxstamina*100));
 		staminapct = (int)(stamina/maxstamina*100);
 	}
 

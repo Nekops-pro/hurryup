@@ -38,19 +38,26 @@ public partial class Player : CharacterBody2D
         Velocity = velocity;
         MoveAndSlide();
         
-        var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        var animatedSprite2D = GetNode<AnimatedSprite2D>("ZeroOne");
         if(velocity.Length() > 0){//Length() 计算向量的模长：√(x² + y²)。
             velocity = velocity.Normalized() * Speed;//Normalized() 方法返回一个单位向量，即向量除以其模长得到的向量。
             if(velocity.Y > 0){
-                animatedSprite2D.Animation = "walk_front";
-            }else if(velocity.X != 0){
-                animatedSprite2D.Animation = "walk_right";
-                animatedSprite2D.FlipH = velocity.X < 0;//左边进行水平翻转
+                animatedSprite2D.Animation = "zhengmian";
+            }else if(velocity.Y < 0){
+                animatedSprite2D.Animation = "beimian";
+            }
+            else if(velocity.X > 0){
+                animatedSprite2D.Animation = "right";
+                // animatedSprite2D.FlipH = velocity.X < 0;//左边进行水平翻转
+            }
+            else if(velocity.X < 0){
+                animatedSprite2D.Animation = "left";
             }
             animatedSprite2D.Play();
         }else
         {
-            animatedSprite2D.Stop();
+            animatedSprite2D.Animation = "daiji";
+            animatedSprite2D.Play();
         }
 
         Position += velocity * (float)delta;//delta 是当前帧与上一帧之间的时间差，以秒为单位。
